@@ -34,19 +34,37 @@ void 	load_game (){
       guesses[i][j] = Unknown;
     }
   }
-
     fclose(my_fd);
     fclose(op_fd);
 }
+
 CellContent 	get_shot (int row, int col){
-  if (row < FIELDSIZE && col < FIELDSIZE && row > -1 && col > -1) {
+  if (row < FIELDSIZE && row > -1 && col < FIELDSIZE && col > -1) {
     return my[row][col];
   }
   return OutOfRange;
 }
+
 bool 	shoot (int row, int col){
-  return true;
+  if (row < FIELDSIZE && col < FIELDSIZE && row > -1 && col > -1) {
+    if (op[row][col] == Boat) {
+      for (int i = row -1; i < row +1 ; i++) {
+        for (int j = col - 1; j < col + 1; j++) {
+          if (i >= 0 && i < FIELDSIZE && j >=0 && j < FIELDSIZE) {
+            op[i][j] = Water;
+          }
+
+        }
+      }
+    }
+    guesses[row][col] = op[row][col];
+    return true;
+  }
+  return false;
 }
 CellContent 	get_my_guess (int row, int col){
-  return guesses[row][col];
+  if (row < FIELDSIZE && row > -1 && col < FIELDSIZE && col > -1) {
+    return guesses[row][col];
+  }
+  return OutOfRange;
 }
